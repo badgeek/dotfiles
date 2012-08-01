@@ -13,14 +13,16 @@
  Bundle 'Color-Sampler-Pack'
  Bundle 'L9'
  Bundle 'FuzzyFinder'
+ Bundle  'MRU'
 
  "from git repo
  Bundle 'Lokaltog/vim-powerline'
 
  " color scheme
- colorscheme peachpuff
+ colorscheme silent
  set number
  syntax on
+ hi Pmenu ctermbg=0xFF00FF
 
  " power line
  set laststatus=2   " Always show the statusline
