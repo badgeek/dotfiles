@@ -36,6 +36,11 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 export PATH=/usr/local/share/python:/usr/local/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Users/xcorex/.rvm/bin
 
+#PYTHON ENV
+
+export WORKON_HOME=~/.virtualenvs
+
+
 #ALIAS
 
 alias startmamp="sh /Applications/MAMP/bin/start.sh"
