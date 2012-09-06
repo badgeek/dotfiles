@@ -28,3 +28,4 @@ export PATH=/usr/local/share/python:/usr/local/bin:/usr/local/sbin:/opt/local/bi
 
 alias mantweet="tweet -exts=/usr/local/bin/ttytter-r2a.pl -ssl -dostream"
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+stty -ixon

@@ -69,3 +69,8 @@ alias speedyugm="curl --silent --user admin:admin \"http://192.168.2.1/userRpm/W
 
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 
+stty -ixon
+
+if [ -f `brew --prefix`/etc/autojump ]; then
+  . `brew --prefix`/etc/autojump
+fi

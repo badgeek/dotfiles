@@ -30,16 +30,22 @@ Bundle 'Tagbar'
 Bundle 'NERDtree'
 Bundle 'Syntastic'
 Bundle 'ervandew/supertab'
-"Bundle 'pydoc'
 Bundle 'ZoomWin'
 
 "from git repo
-Bundle 'Lokaltog/vim-powerline'
+"Bundle 'Lokaltog/vim-powerline'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
+Bundle 'jmcantrell/vim-virtualenv'
+Bundle 'rosenfeld/conque-term'
 "Bundle 'hallettj/jslint.vim.git'
 "Bundle 'joestelmach/lint.vim.git'
-Bundle "fs111/pydoc"
+Bundle 'fs111/pydoc.vim'
+"Bundle 'fholgado/minibufexpl.vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'Command-T'
+"Bundle 'nathanaelkane/vim-indent-guides.git'
+Bundle 'Lokaltog/vim-distinguished.git'
 
 let d8_command = '/usr/local/bin/v8'
 
@@ -57,10 +63,69 @@ if 'VIRTUAL_ENV' in os.environ:
     os.environ['PYTHONPATH'] = os.path.join(project_base_dir,'lib/python2.7/site-packages') 
 EOF
 
+
+
+" automatically reload vimrc when it's saved
+au BufWritePost .vimrc so ~/.vimrc
+
+"easy split window
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+"tun off arrow hehe
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+
+function! ToggleNERDTreeAndTagbar()
+    let w:jumpbacktohere = 1
+
+    " Detect which plugins are open
+    if exists('t:NERDTreeBufName')
+        let nerdtree_open = bufwinnr(t:NERDTreeBufName) != -1
+    else
+        let nerdtree_open = 0
+    endif
+    let tagbar_open = bufwinnr('__Tagbar__') != -1
+
+    " Perform the appropriate action
+    if nerdtree_open && tagbar_open
+        NERDTreeClose
+        TagbarClose
+    elseif nerdtree_open
+        TagbarOpen
+    elseif tagbar_open
+        NERDTree
+    else
+        NERDTree
+        TagbarOpen
+    endif
+
+    " Jump back to the original window
+    for window in range(1, winnr('$'))
+        execute window . 'wincmd w'
+        if exists('w:jumpbacktohere')
+            unlet w:jumpbacktohere
+            break
+        endif
+    endfor
+endfunction
+nmap <leader>\ :call ToggleNERDTreeAndTagbar()<CR>
+
+
+
+" sound no annoying "ding" sound
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
+
 " color scheme
-colorscheme molokai
+colorscheme distinguished
 set number
 syntax on
+set ts=4
 hi Pmenu ctermbg=0xFF00FF
 
 " power line
@@ -82,6 +147,15 @@ set guioptions-=T
 "set guioptions-=R
 "set guioptions-=r
 endif
+
+"PYTHON
+autocmd filetype python source ~/.vim/ftplugin/python/python_pydoc.vim
+autocmd filetype python source ~/.vim/ftplugin/python/vim-ipython.vim
+
+
+"PHP
+autocmd FileType php colorscheme calmar256-dark
+
 
 " HTML (tab width 2 chr, no wrapping)
 autocmd FileType html set sw=2
