@@ -36,6 +36,15 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 export PATH=/usr/local/share/python:/usr/local/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Users/xcorex/.rvm/bin
 
+ # CrossPack-AVR
+ if [ -e "/usr/local/CrossPack-AVR" ]; then
+ 	PATH="$PATH:/usr/local/CrossPack-AVR/bin"
+ 	export PATH
+
+ 	MANPATH="$MANPATH:/usr/local/CrossPack-AVR/man"
+ 	export MANPATH
+ fi
+
 #PYTHON ENV
 
 export WORKON_HOME=~/.virtualenvs
@@ -71,6 +80,4 @@ export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 
 stty -ixon
 
-if [ -f `brew --prefix`/etc/autojump ]; then
-  . `brew --prefix`/etc/autojump
-fi
+
