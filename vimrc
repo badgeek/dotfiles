@@ -8,17 +8,24 @@ call vundle#rc()
 "bundle start
 
 Bundle 'gmarik/vundle'
-"Bundle 'ervandew/supertab'
+Bundle 'ervandew/supertab'
 "Bundle 'Rip-Rip/clang_complete'
 Bundle 'msanders/snipmate.vim'
 Bundle 'flazz/vim-colorschemes'
 Bundle 'vim-scripts/Colour-Sampler-Pack'
-Bundle 'vim-scripts/ScrollColors'
+"Bundle 'vim-scripts/ScrollColors'
 Bundle 'kien/ctrlp.vim'
 Bundle 'vim-scripts/STL-improved'
-"Bundle 'badgeek/vim-clang'
+Bundle 'badgeek/vim-clang'
+Bundle 'scrooloose/syntastic'
+Bundle 'mbadran/headlights'
+Bundle 'twe4ked/vim-peepopen'
+Bundle 'majutsushi/tagbar'
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+Bundle 'scrooloose/nerdtree'
 "Bundle 'https://gist.github.com/badgeek/5056840/raw/4fdc3543f1b49bca0370e74dd109e5b1cd291264/dash.vim'
-Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Valloric/YouCompleteMe'
 
 
 "bundle stop
@@ -97,7 +104,14 @@ command! -nargs=* Dash call <SID>dash(<f-args>)
 
 
 " automatically reload vimrc when it's saved
-au BufWritePost .vimrc so ~/.vimrc
+" au BufWritePost .vimrc so ~/.vimrc
+" https://gist.github.com/nocash/1988620
+augroup AutoReloadVimRC
+	au!
+	" automatically reload vimrc when it's saved
+	au BufWritePost $MYVIMRC so $MYVIMRC
+augroup END
+
 
 "appearance, etc on gui macvim
 let g:Powerline_symbols = 'fancy'
@@ -111,6 +125,12 @@ if has("gui_running")
 	"set guioptions-=l
 	"set guioptions-=R
 	"set guioptions-=r
+endif
+
+"Text editors on Mac OS X lets the user hold down shift+movement key to extend the selection. Also, pressing a printable key whilst selecting replaces the current selection with that character.
+"http://stackoverflow.com/questions/2129723/using-shiftarrows-to-select-text-in-vim-macvim
+if has("gui_macvim")
+    let macvim_hig_shift_movement = 1
 endif
 
 
@@ -132,6 +152,18 @@ set completeopt=menu,menuone,longest
 "Limit popup menu height
 set pumheight=15
 
+"These two options, when set together, will make /-style searches
+"case-sensitive only if there is a capital letter in the search expression.
+"*-style searches continue to be consistently case-sensitive.
+set ignorecase 
+set smartcase
+
+set hlsearch " Highlight search terms...
+set incsearch " ...dynamically as they are typed.
+
+
+" Use jk as <Esc> alternative 
+inoremap jk <Esc>
 
 "easy split window
 nnoremap <C-h> <C-w>h
@@ -146,24 +178,31 @@ nnoremap <C-l> <C-w>l
 "nnoremap <right> <nop>
 
 "open file or buffer
-nmap <leader>fo :FufFileWithCurrentBufferDir<CR>
+nmap <leader>ff :FufFileWithCurrentBufferDir<CR>
 nmap <leader>fd :FufDirWithCurrentBufferDir<CR>
 nmap <leader>fb :CommandTBuffer<CR>
-
-"switch buffer 
-noremap <C-left> :bprev<CR>
-noremap <C-right> :bnext<CR> 
-
 nmap <leader>\ :call ToggleNERDTreeAndTagbar()<CR>
 nmap <leader>t :TagbarToggle<CR> 
+
+"clear highlight search
+noremap <silent><Leader>/ :nohls<CR>
+
+"switch buffer 
+noremap <C-left> :tabp<CR>
+noremap <C-right> :tabn<CR> 
+
+"switch tab
+noremap <C-up> :bnext<CR> 
+noremap <C-down> :bprev<CR>
+
 
 " OSX - backspace fix
 set backspace=indent,eol,start
 
 " PYTHON
-autocmd filetype python source ~/.vim/ftplugin/python/python_pydoc.vim
-autocmd filetype python source ~/.vim/ftplugin/python/vim-ipython.vim
-autocmd filetype python colorscheme jellybeans
+"autocmd filetype python source ~/.vim/ftplugin/python/python_pydoc.vim
+"autocmd filetype python source ~/.vim/ftplugin/python/vim-ipython.vim
+"autocmd filetype python colorscheme jellybeans
 
 " PHP
 autocmd FileType php colorscheme calmar256-dark
@@ -197,6 +236,7 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 "let g:clang_complete_auto = 0
 "let g:clang_complete_copen = 1
 "let g:clang_use_library = 1
+"let g:clang_library_path="/Users/xcorex/ycm_build/llvm_root_dir/lib/"
 "let g:clang_library_path="/Users/xcorex/Library/Application Support/Sublime Text 2/Packages/SublimeClang/"
 "let g:clang_trailing_placeholder = 1
 "let g:clang_snippets=1
@@ -213,3 +253,12 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 let g:clang_exec="arch -i386 /Developer/usr/bin/clang"
 let g:clang_cpp_options="-fcxx-exceptions -fexceptions"
 let g:clang_diags=""
+
+
+let g:syntastic_cpp_include_dirs = ['/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/3d', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/app', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/communication', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/events', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/gl', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/graphics', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/math', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/sound', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/types', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/utils', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/openFrameworks/video', '/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/assimp/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/assimp/include/Compiler','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/cairo/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/cairo/include/cairo','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/cairo/include/libpng15','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/cairo/include/pixman-1','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/fmodex/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/FreeImage/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/freetype/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/freetype/include/freetype2','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/freetype/include/freetype2/freetype','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/freetype/include/freetype2/freetype/config','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/freetype/include/freetype2/freetype/internal','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/freetype/include/freetype2/freetype/internal/services','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/glew/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/glew/include/GL','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/glut/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/CppUnit','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/Crypto','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/Data','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/DOM','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/Dynamic','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/Net','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/SAX','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/Util','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/XML','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/poco/include/Poco/Zip','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/rtAudio/include','/Users/xcorex/Documents/Documents/Projects/OpenFrameworks/of_v0.7.4_osx_release/apps/projects/cameraBuffer/../../../libs/tess2/include' ]
+let g:syntastic_cpp_check_header = 0
+let g:syntastic_cpp_no_include_search = 0
+let g:syntastic_check_on_open= 0
+let g:syntastic_enable_balloons = 1
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php'], 'passive_filetypes': ['puppet'] }
+
