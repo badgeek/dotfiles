@@ -26,7 +26,7 @@ Bundle 'FuzzyFinder'
 Bundle 'scrooloose/nerdtree'
 "Bundle 'https://gist.github.com/badgeek/5056840/raw/4fdc3543f1b49bca0370e74dd109e5b1cd291264/dash.vim'
 "Bundle 'Valloric/YouCompleteMe'
-
+Bundle 'Lokaltog/vim-easymotion'
 
 "bundle stop
 
